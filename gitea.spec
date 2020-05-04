@@ -17,9 +17,10 @@ BuildRequires:  npm
 
 BuildRequires:  pam-devel
 
+Requires(pre):  shadow-utils
 Requires:       git
 
-Requires(pre):  shadow-utils
+Recommends:     git-lfs
 
 
 %description
