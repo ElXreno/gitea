@@ -80,5 +80,5 @@ exit 0
 
 
 %changelog
-* Mon May  4 2020 ElXreno <elxreno@gmail.com>
+* Mon May 04 2020 ElXreno <elxreno@gmail.com>
 - Initial packaging
