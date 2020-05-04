@@ -1,5 +1,7 @@
 %global debug_package %{nil}
 
+%global gitea_user gitea
+
 Name:           gitea
 Version:        1.11.4
 Release:        1%{?dist}
@@ -10,6 +12,7 @@ URL:            https://gitea.io
 Source0:        https://github.com/go-gitea/gitea/releases/download/v%{version}/%{name}-src-%{version}.tar.gz
 
 Source10:       %{name}.service
+Source11:       %{name}-sysusers.conf
 
 BuildRequires:  systemd
 BuildRequires:  golang
@@ -31,7 +34,7 @@ Git with a cup of tea, painless self-hosted git service.
 %autosetup -c
 
 # Change default user in sample config
-sed -i "s|RUN_USER = git|RUN_USER = gitea|" custom/conf/app.ini.sample
+sed -i "s|RUN_USER = git|RUN_USER = %{gitea_user}|" custom/conf/app.ini.sample
 
 
 %build
@@ -46,14 +49,11 @@ install -m 0644 -Dp custom/conf/app.ini.sample  %{buildroot}%{_sysconfdir}/%{nam
 touch                                           %{buildroot}%{_sysconfdir}/%{name}/app.ini
 
 install -m 0644 -Dp %{SOURCE10}                 %{buildroot}%{_unitdir}/%{name}.service
+install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{name}.conf
 
 
 %pre
-getent group %{name} >/dev/null || groupadd -r %{name}
-getent passwd %{name} >/dev/null || \
-    useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
-    -c "%{name} service account" %{name}
-exit 0
+%sysusers_create_package %{name} %{SOURCE11}
 
 
 %post
@@ -74,9 +74,10 @@ exit 0
 %doc README.md
 %{_bindir}/%{name}
 %{_unitdir}/%{name}.service
-%config %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini.sample
-%config(noreplace) %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini
-%dir %attr(755, %{name}, %{name}) %{_sharedstatedir}/%{name}
+%{_sysusersdir}/%{name}.conf
+%config %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.ini.sample
+%config(noreplace) %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.ini
+%dir %attr(755, %{gitea_user}, %{gitea_user}) %{_sharedstatedir}/%{name}
 
 
 
