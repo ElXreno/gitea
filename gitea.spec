@@ -26,14 +26,20 @@ Git with a cup of tea, painless self-hosted git service.
 %prep
 %autosetup -c
 
+# Change default user in sample config
+sed -i "s|RUN_USER = git|RUN_USER = gitea|" custom/conf/app.ini.sample
+
 
 %build
 TAGS="bindata pam sqlite sqlite_unlock_notify" %make_build
 
 
 %install
-install -m 0755 -Dp %{name}     %{buildroot}%{_bindir}/%{name}
-install -m 0755 -dp             %{buildroot}%{_sharedstatedir}/%{name}
+install -m 0755 -Dp %{name}                     %{buildroot}%{_bindir}/%{name}
+install -m 0755 -dp                             %{buildroot}%{_sharedstatedir}/%{name}
+
+install -m 0644 -Dp /dev/zero                   %{buildroot}%{_sysconfdir}/%{name}/app.ini
+install -m 0644 -Dp custom/conf/app.ini.sample  %{buildroot}%{_sysconfdir}/%{name}/app.ini.sample
 
 
 %pre
@@ -49,6 +55,8 @@ exit 0
 %license LICENSE
 %doc README.md
 %{_bindir}/%{name}
+%config(noreplace) %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini
+%config %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini.sample
 %dir %attr(755, %{name}, %{name}) %{_sharedstatedir}/%{name}
 
 
