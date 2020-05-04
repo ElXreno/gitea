@@ -25,7 +25,7 @@ Git with a cup of tea, painless self-hosted git service.
 
 
 %build
-TAGS="bindata pam sqlite sqlite_unlock_notify" GITEA_VERSION="%{version}" %make_build
+TAGS="bindata pam sqlite sqlite_unlock_notify" %make_build
 
 
 %install
