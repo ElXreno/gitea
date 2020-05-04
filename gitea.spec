@@ -11,9 +11,12 @@ Source0:        https://github.com/go-gitea/gitea/releases/download/v%{version}/
 
 BuildRequires:  golang
 BuildRequires:  npm
+
 BuildRequires:  pam-devel
 
 Requires:       git
+
+Requires(pre):  shadow-utils
 
 
 %description
@@ -29,14 +32,24 @@ TAGS="bindata pam sqlite sqlite_unlock_notify" %make_build
 
 
 %install
-install -m 0755 -Dp %{name} %{buildroot}%{_bindir}/gitea
+install -m 0755 -Dp %{name}     %{buildroot}%{_bindir}/%{name}
+install -m 0755 -dp             %{buildroot}%{_sharedstatedir}/%{name}
+
+
+%pre
+getent group %{name} >/dev/null || groupadd -r %{name}
+getent passwd %{name} >/dev/null || \
+    useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
+    -c "%{name} service account" %{name}
+exit 0
 
 
 
 %files
 %license LICENSE
 %doc README.md
-%{_bindir}/gitea
+%{_bindir}/%{name}
+%dir %attr(755, %{name}, %{name}) %{_sharedstatedir}/%{name}
 
 
 
