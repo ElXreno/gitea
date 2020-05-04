@@ -9,6 +9,9 @@ License:        MIT
 URL:            https://gitea.io
 Source0:        https://github.com/go-gitea/gitea/releases/download/v%{version}/%{name}-src-%{version}.tar.gz
 
+Source10:       %{name}.service
+
+BuildRequires:  systemd
 BuildRequires:  golang
 BuildRequires:  npm
 
@@ -38,8 +41,10 @@ TAGS="bindata pam sqlite sqlite_unlock_notify" %make_build
 install -m 0755 -Dp %{name}                     %{buildroot}%{_bindir}/%{name}
 install -m 0755 -dp                             %{buildroot}%{_sharedstatedir}/%{name}
 
-install -m 0644 -Dp /dev/zero                   %{buildroot}%{_sysconfdir}/%{name}/app.ini
 install -m 0644 -Dp custom/conf/app.ini.sample  %{buildroot}%{_sysconfdir}/%{name}/app.ini.sample
+touch                                           %{buildroot}%{_sysconfdir}/%{name}/app.ini
+
+install -m 0644 -Dp %{SOURCE10}                 %{buildroot}%{_unitdir}/%{name}.service
 
 
 %pre
@@ -50,13 +55,26 @@ getent passwd %{name} >/dev/null || \
 exit 0
 
 
+%post
+%systemd_post %{name}.service
+
+
+%preun
+%systemd_preun %{name}.service
+
+
+%postun
+%systemd_postun_with_restart %{name}.service
+
+
 
 %files
 %license LICENSE
 %doc README.md
 %{_bindir}/%{name}
-%config(noreplace) %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini
+%{_unitdir}/%{name}.service
 %config %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini.sample
+%config(noreplace) %attr(664, root, %{name}) %{_sysconfdir}/gitea/app.ini
 %dir %attr(755, %{name}, %{name}) %{_sharedstatedir}/%{name}
 
 
