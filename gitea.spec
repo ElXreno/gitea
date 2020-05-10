@@ -3,7 +3,7 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.11.4
+Version:        1.11.5
 Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
@@ -82,5 +82,8 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Sun May 10 2020 ElXreno <elxreno@gmail.com> - 1.11.5-1
+- Updated to version 1.11.5
+
 * Mon May 04 2020 ElXreno <elxreno@gmail.com>
 - Initial packaging
