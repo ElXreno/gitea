@@ -3,13 +3,13 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.12.1
+Version:        1.12.2
 Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
 License:        MIT
 URL:            https://gitea.io
-Source0:        gitea-src-1.12.1.tar.gz
+Source0:        https://github.com/go-gitea/gitea/releases/download/v%{version}/%{name}-src-%{version}.tar.gz
 
 Source10:       %{name}.service
 Source11:       %{name}-sysusers.conf
@@ -82,6 +82,9 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Sun Jul 12 2020 ElXreno <elxreno@gmail.com> - 1.12.2-1
+- Updated to version 1.12.2
+
 * Mon Jun 22 2020 ElXreno <elxreno@gmail.com> - 1.12.1-1
 - Updated to version 1.12.1
 
