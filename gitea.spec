@@ -4,7 +4,7 @@
 
 Name:           gitea
 Version:        1.13.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
 License:        MIT
@@ -34,7 +34,7 @@ Git with a cup of tea, painless self-hosted git service.
 %autosetup -c
 
 # Change default user in sample config
-sed -i "s|RUN_USER = git|RUN_USER = %{gitea_user}|" custom/conf/app.ini.sample
+sed -i "s|RUN_USER = git|RUN_USER = %{gitea_user}|" custom/conf/app.example.ini
 
 
 %build
@@ -45,7 +45,7 @@ TAGS="bindata pam sqlite sqlite_unlock_notify" %make_build
 install -m 0755 -Dp %{name}                     %{buildroot}%{_bindir}/%{name}
 install -m 0755 -dp                             %{buildroot}%{_sharedstatedir}/%{name}
 
-install -m 0644 -Dp custom/conf/app.ini.sample  %{buildroot}%{_sysconfdir}/%{name}/app.ini.sample
+install -m 0644 -Dp custom/conf/app.example.ini %{buildroot}%{_sysconfdir}/%{name}/app.example.ini
 touch                                           %{buildroot}%{_sysconfdir}/%{name}/app.ini
 
 install -m 0644 -Dp %{SOURCE10}                 %{buildroot}%{_unitdir}/%{name}.service
@@ -75,13 +75,16 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 %{_bindir}/%{name}
 %{_unitdir}/%{name}.service
 %{_sysusersdir}/%{name}.conf
-%config %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.ini.sample
+%config %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.example.ini
 %config(noreplace) %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.ini
 %dir %attr(755, %{gitea_user}, %{gitea_user}) %{_sharedstatedir}/%{name}
 
 
 
 %changelog
+* Wed Dec  2 10:34:09 +03 2020 ElXreno <elxreno@gmail.com> - 1.13.0-2
+- Fix example config installation
+
 * Wed Dec  2 10:19:02 +03 2020 ElXreno <elxreno@gmail.com> - 1.13.0-1
 - Update to version 1.13.0
 
