@@ -3,8 +3,8 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.13.0
-Release:        2%{?dist}
+Version:        1.13.1
+Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
 License:        MIT
@@ -82,6 +82,9 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Wed Dec 30 06:56:50 +03 2020 ElXreno <elxreno@gmail.com> - 1.13.1-1
+- Update to version 1.13.1
+
 * Wed Dec  2 10:34:09 +03 2020 ElXreno <elxreno@gmail.com> - 1.13.0-2
 - Fix example config installation
 
