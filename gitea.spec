@@ -4,7 +4,7 @@
 
 Name:           gitea
 Version:        1.13.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
 License:        MIT
@@ -38,7 +38,11 @@ sed -i "s|RUN_USER = git|RUN_USER = %{gitea_user}|" custom/conf/app.example.ini
 
 
 %build
-TAGS="bindata pam sqlite sqlite_unlock_notify" %make_build
+TAGS="bindata pam sqlite sqlite_unlock_notify" \
+LDFLAGS="-X \"code.gitea.io/gitea/modules/setting.CustomPath=%{_sharedstatedir}/%{name}\" \
+         -X \"code.gitea.io/gitea/modules/setting.CustomConf=%{_sysconfdir}/%{name}/app.ini\" \
+         -X \"code.gitea.io/gitea/modules/setting.AppWorkPath=%{_sharedstatedir}/%{name}\"" \
+%make_build
 
 
 %install
@@ -75,13 +79,16 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 %{_bindir}/%{name}
 %{_unitdir}/%{name}.service
 %{_sysusersdir}/%{name}.conf
-%config %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.example.ini
-%config(noreplace) %attr(664, root, %{gitea_user}) %{_sysconfdir}/gitea/app.ini
+%config %attr(664, root, %{gitea_user}) %{_sysconfdir}/%{name}/app.example.ini
+%config(noreplace) %attr(664, root, %{gitea_user}) %{_sysconfdir}/%{name}/app.ini
 %dir %attr(755, %{gitea_user}, %{gitea_user}) %{_sharedstatedir}/%{name}
 
 
 
 %changelog
+* Thu Jan 14 13:26:51 MSK 2021 George Nikandrov <george.nikandrov@feuerplatz.ru> - 1.13.1-2
+- Changed builtin paths
+
 * Wed Dec 30 06:56:50 +03 2020 ElXreno <elxreno@gmail.com> - 1.13.1-1
 - Update to version 1.13.1
 
