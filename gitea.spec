@@ -3,8 +3,8 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.13.1
-Release:        2%{?dist}
+Version:        1.13.2
+Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
 License:        MIT
@@ -86,6 +86,9 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Tue Feb 02 2021 ElXreno <elxreno@gmail.com> - 1.13.2-1
+- Update to version 1.13.2
+
 * Thu Jan 14 13:26:51 MSK 2021 George Nikandrov <george.nikandrov@feuerplatz.ru> - 1.13.1-2
 - Changed builtin paths
 
