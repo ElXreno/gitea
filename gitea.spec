@@ -3,7 +3,7 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.13.2
+Version:        1.13.3
 Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
@@ -86,6 +86,9 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Thu Mar 04 2021 ElXreno <elxreno@gmail.com> - 1.13.3-1
+- Update to version 1.13.3
+
 * Tue Feb 02 2021 ElXreno <elxreno@gmail.com> - 1.13.2-1
 - Update to version 1.13.2
 
