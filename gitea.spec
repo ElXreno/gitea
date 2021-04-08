@@ -3,8 +3,8 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.13.5
-Release:        2%{?dist}
+Version:        1.13.7
+Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
 License:        MIT
@@ -86,6 +86,9 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Thu Apr 08 2021 ElXreno <elxreno@gmail.com> - 1.13.7-1
+- Update to version 1.13.7
+
 * Wed Mar 31 2021 ElXreno <elxreno@gmail.com> - 1.13.5-2
 - Use bash for gitea user
 
