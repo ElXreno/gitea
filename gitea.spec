@@ -3,7 +3,7 @@
 %global gitea_user gitea
 
 Name:           gitea
-Version:        1.15.4
+Version:        1.17.2
 Release:        1%{?dist}
 Summary:        Git with a cup of tea, painless self-hosted git service
 
@@ -31,7 +31,7 @@ Git with a cup of tea, painless self-hosted git service.
 
 
 %prep
-%autosetup -c
+%autosetup -n %{name}-src-%{version}
 
 # Change default user in sample config
 sed -i "s|RUN_USER = git|RUN_USER = %{gitea_user}|" custom/conf/app.example.ini
@@ -86,6 +86,9 @@ install -m 0644 -Dp %{SOURCE11}                 %{buildroot}%{_sysusersdir}/%{na
 
 
 %changelog
+* Sat Oct 15 2022 ElXreno <elxreno@gmail.com> - 1.17.2-1
+- Update to version 1.17.2
+
 * Sat Oct 09 2021 ElXreno <elxreno@gmail.com> - 1.15.4-1
 - Update to version 1.15.4
 
